@@ -797,7 +797,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
 
         bestTime = Math.max(nbSeconds, bestTime);
 
-        var displayText = 'Score: ' + ~~(R / 100) + " Current Time: " + nbSeconds + " seconds.";
+        var displayText = 'Score: ' + ~~(R / 100) ;
 
         0 != R && (null == ua && (ua = new va(24, "#FFFFFF")), ua.C(displayText), c = ua.L(), a = c.width, f.globalAlpha = .2, f.fillStyle = "#000000", f.fillRect(10, r - 10 - 24 - 10, a + 10, 34), f.globalAlpha = 1, f.drawImage(c, 15, r -
             10 - 24 - 5));
@@ -961,8 +961,6 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
         var botString = window.botList[botIndex].displayText();
 
         var debugStrings = [];
-        debugStrings.push("Bot: " + window.botList[botIndex].name);
-        debugStrings.push("Launcher: AposLauncher " + aposLauncherVersion);
         debugStrings.push("T - Bot: " + (!toggle ? "On" : "Off"));
         debugStrings.push("R - Lines: " + (!toggleDraw ? "On" : "Off"));
 
@@ -970,17 +968,8 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
             debugStrings.push(botString[i]);
         }
 
-        debugStrings.push("");
         debugStrings.push("Best Score: " + ~~(sessionScore / 100));
-        debugStrings.push("Best Time: " + bestTime + " seconds");
-        debugStrings.push("");
-        debugStrings.push(serverIP);
-
-        if (getPlayer().length > 0) {
-            var offsetX = -getMapStartX();
-            var offsetY = -getMapStartY();
-            debugStrings.push("Location: " + Math.floor(getPlayer()[0].x + offsetX) + ", " + Math.floor(getPlayer()[0].y + offsetY));
-        }
+        //debugStrings.push(serverIP);
 
         var offsetValue = 20;
         var text = new va(18, (getDarkBool() ? '#F2FBFF' : '#111111'));
