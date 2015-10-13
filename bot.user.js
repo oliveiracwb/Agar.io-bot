@@ -56,7 +56,7 @@ function getLatestCommit() {
             dataType: "jsonp"
         }).done(function(data) {
             console.dir(data.data);
-            console.log("hmm: " + data.data.object.sha);
+            //console.log("hmm: " + data.data.object.sha);
             sha = data.data.object.sha;
 
             function update(prefix, name, url) {
@@ -82,20 +82,20 @@ function getLatestCommit() {
                 {
                     update("aposBot", "bot.user.js", "https://github.com/Apostolique/Agar.io-bot/blob/" + sha + "/bot.user.js/");
                 }
-                console.log('Current bot.user.js Version: ' + myVersion + " on Github: " + latestVersion);
+                //console.log('Current bot.user.js Version: ' + myVersion + " on Github: " + latestVersion);
             });
 
         }).fail(function() {});
 }
 getLatestCommit();
 
-console.log("Running Apos Bot!");
+//console.log("Running Apos Bot!");
 
 var f = window;
 var g = window.jQuery;
 
 
-console.log("Apos Bot!");
+//console.log("Apos Bot!");
 
 window.botList = window.botList || [];
 
@@ -118,7 +118,7 @@ function AposBot() {
     this.toggleFollow = false;
     this.keyAction = function(key) {
         if (81 == key.keyCode) {
-            console.log("Toggle Follow Mouse!");
+            //console.log("Toggle Follow Mouse!");
             this.toggleFollow = !this.toggleFollow;
         }
     };
@@ -143,7 +143,7 @@ function AposBot() {
         if (false){
         var params = [cell1.x, cell1.y, cell2.x, cell2.y, cell1.size, cell2.size, dist];
         var debugString = params.join(", ");
-        console.log("Merge:" + debugString);
+        //console.log("Merge:" + debugString);
         }
         
         return dist <= -50;
@@ -247,7 +247,7 @@ function AposBot() {
                 return true;
             }
 
-            //console.log("COLOR: " + color);
+            ////console.log("COLOR: " + color);
 
         } else {
             for (var i = 0; i < player.length; i++) {
@@ -354,7 +354,7 @@ function AposBot() {
             foodList.push([foodElementList[i].x, foodElementList[i].y, foodElementList[i].size]);
         }
         
-        //console.log("Merglist length: " +  mergeList.length)
+        ////console.log("Merglist length: " +  mergeList.length)
         //cell merging
         for (var i = 0; i < mergeList.length; i++) {
             for (var z = 0; z < mergeList.length; z++) {
@@ -502,7 +502,7 @@ function AposBot() {
         if (range2[0] == this.mod(range2[0] + range2[1], 360)) {
             return true;
         }
-        //console.log("r1: " + range1[0] + ", " + range1[1] + " ... r2: " + range2[0] + ", " + range2[1]);
+        ////console.log("r1: " + range1[0] + ", " + range1[1] + " ... r2: " + range2[0] + ", " + range2[1]);
 
         var distanceFrom0 = this.mod(range1[0] - range2[0], 360);
         var distanceFrom1 = this.mod(range1[1] - range2[0], 360);
@@ -653,7 +653,7 @@ function AposBot() {
         var distanceFromWallX = 2000;
         if (blob.x < getMapStartX() + distanceFromWallX) {
             //LEFT
-            //console.log("Left");
+            ////console.log("Left");
             listToUse.push([
                 [115, true],
                 [245, false], this.computeInexpensiveDistance(getMapStartX(), blob.y, blob.x, blob.y)
@@ -666,7 +666,7 @@ function AposBot() {
         }
         if (blob.y < getMapStartY() + distanceFromWallY) {
             //TOP
-            //console.log("TOP");
+            ////console.log("TOP");
             listToUse.push([
                 [205, true],
                 [335, false], this.computeInexpensiveDistance(blob.x, getMapStartY(), blob.x, blob.y)
@@ -679,7 +679,7 @@ function AposBot() {
         }
         if (blob.x > getMapEndX() - distanceFromWallX) {
             //RIGHT
-            //console.log("RIGHT");
+            ////console.log("RIGHT");
             listToUse.push([
                 [295, true],
                 [65, false], this.computeInexpensiveDistance(getMapEndX(), blob.y, blob.x, blob.y)
@@ -692,7 +692,7 @@ function AposBot() {
         }
         if (blob.y > getMapEndY() - distanceFromWallY) {
             //BOTTOM
-            //console.log("BOTTOM");
+            ////console.log("BOTTOM");
             listToUse.push([
                 [25, true],
                 [155, false], this.computeInexpensiveDistance(blob.x, getMapEndY(), blob.x, blob.y)
@@ -794,7 +794,7 @@ function AposBot() {
         drawPoint(angleStuff[2][0], angleStuff[2][1], 3, "");
         drawPoint(angleStuff[3][0], angleStuff[3][1], 3, "");
 
-        //console.log("Adding badAngles: " + leftAngle + ", " + rightAngle + " diff: " + difference);
+        ////console.log("Adding badAngles: " + leftAngle + ", " + rightAngle + " diff: " + difference);
 
         var lineLeft = this.followAngle(leftAngle, blob1.x, blob1.y, 150 + blob1.size - index * 10);
         var lineRight = this.followAngle(rightAngle, blob1.x, blob1.y, 150 + blob1.size - index * 10);
@@ -821,7 +821,7 @@ function AposBot() {
         //TODO: shiftAngle needs to respect the range! DONE?
         for (var i = 0; i < listToUse.length; i++) {
             if (this.angleIsWithin(angle, listToUse[i])) {
-                //console.log("Shifting needed!");
+                ////console.log("Shifting needed!");
 
                 var angle1 = listToUse[i][0];
                 var angle2 = this.rangeToAngle(listToUse[i]);
@@ -844,7 +844,7 @@ function AposBot() {
                 }
             }
         }
-        //console.log("No Shifting Was needed!");
+        ////console.log("No Shifting Was needed!");
         return angle;
     };
 
@@ -894,7 +894,7 @@ function AposBot() {
                 //Loops only for one cell for now.
                 for (var k = 0; /*k < player.length*/ k < 1; k++) {
 
-                    //console.log("Working on blob: " + k);
+                    ////console.log("Working on blob: " + k);
 
                     drawCircle(player[k].x, player[k].y, player[k].size + this.splitDistance, 5);
                     //drawPoint(player[0].x, player[0].y - player[0].size, 3, "" + Math.floor(player[0].x) + ", " + Math.floor(player[0].y));
@@ -922,7 +922,7 @@ function AposBot() {
 
                     var clusterAllFood = this.clusterFood(allPossibleFood, player[k].size);
 
-                    //console.log("Looking for enemies!");
+                    ////console.log("Looking for enemies!");
 
                     //Loop through all the cells that were identified as threats.
                     for (var i = 0; i < allPossibleThreats.length; i++) {
@@ -932,9 +932,9 @@ function AposBot() {
                         allPossibleThreats[i].enemyDist = enemyDistance;
                     }
 
-                    /*allPossibleThreats.sort(function(a, b){
+                    allPossibleThreats.sort(function(a, b){
                         return a.enemyDist-b.enemyDist;
-                    })*/
+                    })
 
                     for (var i = 0; i < allPossibleThreats.length; i++) {
 
@@ -946,7 +946,7 @@ function AposBot() {
 
                         var shiftDistance = player[k].size;
 
-                        //console.log("Found distance.");
+                        ////console.log("Found distance.");
 
                         var enemyCanSplit = this.canSplit(player[k], allPossibleThreats[i]);
                         var secureDistance = (enemyCanSplit ? splitDangerDistance : normalDangerDistance);
@@ -956,7 +956,7 @@ function AposBot() {
                                 clusterAllFood.splice(j, 1);
                         }
 
-                        //console.log("Removed some food.");
+                        ////console.log("Removed some food.");
 
                         if (enemyCanSplit) {
                             drawCircle(allPossibleThreats[i].x, allPossibleThreats[i].y, splitDangerDistance, 0);
@@ -966,7 +966,7 @@ function AposBot() {
                             drawCircle(allPossibleThreats[i].x, allPossibleThreats[i].y, normalDangerDistance + shiftDistance, 6);
                         }
 
-                        if (allPossibleThreats[i].danger && getLastUpdate() - allPossibleThreats[i].dangerTimeOut > 1000) {
+                        if (allPossibleThreats[i].danger && getLastUpdate() - allPossibleThreats[i].dangerTimeOut > 3000) {
 
                             allPossibleThreats[i].danger = false;
                         }
@@ -978,7 +978,7 @@ function AposBot() {
                             allPossibleThreats[i].dangerTimeOut = f.getLastUpdate();
                         }*/
 
-                        //console.log("Figured out who was important.");
+                        ////console.log("Figured out who was important.");
 
                         if ((enemyCanSplit && enemyDistance < splitDangerDistance) || (enemyCanSplit && allPossibleThreats[i].danger)) {
 
@@ -1001,10 +1001,10 @@ function AposBot() {
 
                             obstacleList.push([[angle1, true], [angle2, false]]);
                         }
-                        //console.log("Done with enemy: " + i);
+                        ////console.log("Done with enemy: " + i);
                     }
 
-                    //console.log("Done looking for enemies!");
+                    ////console.log("Done looking for enemies!");
 
                     var goodAngles = [];
                     var stupidList = [];
@@ -1054,21 +1054,21 @@ function AposBot() {
                     //stupidList.push([[10, true], [200, false]]);
 
                     stupidList.sort(function(a, b){
-                        //console.log("Distance: " + a[2] + ", " + b[2]);
+                        ////console.log("Distance: " + a[2] + ", " + b[2]);
                         return a[2]-b[2];
                     });
 
-                    //console.log("Added random noob stuff.");
+                    ////console.log("Added random noob stuff.");
 
                     var sortedInterList = [];
                     var sortedObList = [];
 
                     for (var i = 0; i < stupidList.length; i++) {
-                        //console.log("Adding to sorted: " + stupidList[i][0][0] + ", " + stupidList[i][1][0]);
+                        ////console.log("Adding to sorted: " + stupidList[i][0][0] + ", " + stupidList[i][1][0]);
                         var tempList = this.addAngle(sortedInterList, stupidList[i]);
 
                         if (tempList.length === 0) {
-                            console.log("MAYDAY IT'S HAPPENING!");
+                            //console.log("MAYDAY IT'S HAPPENING!");
                             break;
                         } else {
                             sortedInterList = tempList;
@@ -1175,7 +1175,7 @@ function AposBot() {
                         //When there are enemies around but no good angles
                         //You're likely screwed. (This should never happen.)
 
-                        console.log("Failed");
+                        //console.log("Failed");
                         destinationChoices = [tempMoveX, tempMoveY];
                         /*var angleWeights = [] //Put weights on the angles according to enemy distance
                         for (var i = 0; i < allPossibleThreats.length; i++){
@@ -1196,20 +1196,20 @@ function AposBot() {
                         destinationChoices.push(line1);*/
                     } else if (clusterAllFood.length > 0) {
                         for (var i = 0; i < clusterAllFood.length; i++) {
-                            //console.log("mefore: " + clusterAllFood[i][2]);
+                            ////console.log("mefore: " + clusterAllFood[i][2]);
                             //This is the cost function. Higher is better.
 
                                 var clusterAngle = this.getAngle(clusterAllFood[i][0], clusterAllFood[i][1], player[k].x, player[k].y);
 
                                 clusterAllFood[i][2] = clusterAllFood[i][2] * 6 - this.computeDistance(clusterAllFood[i][0], clusterAllFood[i][1], player[k].x, player[k].y);
-                                //console.log("Current Value: " + clusterAllFood[i][2]);
+                                ////console.log("Current Value: " + clusterAllFood[i][2]);
 
                                 //(goodAngles[bIndex][1] / 2 - (Math.abs(perfectAngle - clusterAngle)));
 
                                 clusterAllFood[i][3] = clusterAngle;
 
                                 drawPoint(clusterAllFood[i][0], clusterAllFood[i][1], 1, "");
-                                //console.log("After: " + clusterAllFood[i][2]);
+                                ////console.log("After: " + clusterAllFood[i][2]);
                         }
 
                         var bestFoodI = 0;
@@ -1221,7 +1221,7 @@ function AposBot() {
                             }
                         }
 
-                        //console.log("Best Value: " + clusterAllFood[bestFoodI][2]);
+                        ////console.log("Best Value: " + clusterAllFood[bestFoodI][2]);
 
                         var distance = this.computeDistance(player[k].x, player[k].y, clusterAllFood[bestFoodI][0], clusterAllFood[bestFoodI][1]);
 
@@ -1241,10 +1241,10 @@ function AposBot() {
                     drawPoint(tempPoint[0], tempPoint[1], tempPoint[2], "");
                     //drawPoint(tempPoint[0], tempPoint[1], tempPoint[2], "" + Math.floor(this.computeDistance(tempPoint[0], tempPoint[1], I, J)));
                     //drawLine(tempPoint[0], tempPoint[1], player[0].x, player[0].y, 6);
-                    //console.log("Slope: " + slope(tempPoint[0], tempPoint[1], player[0].x, player[0].y) + " Angle: " + getAngle(tempPoint[0], tempPoint[1], player[0].x, player[0].y) + " Side: " + this.mod(getAngle(tempPoint[0], tempPoint[1], player[0].x, player[0].y) - 90, 360));
+                    ////console.log("Slope: " + slope(tempPoint[0], tempPoint[1], player[0].x, player[0].y) + " Angle: " + getAngle(tempPoint[0], tempPoint[1], player[0].x, player[0].y) + " Side: " + this.mod(getAngle(tempPoint[0], tempPoint[1], player[0].x, player[0].y) - 90, 360));
                     tempPoint[2] = 1;
 
-                    //console.log("Done working on blob: " + i);
+                    ////console.log("Done working on blob: " + i);
                 }
 
                 //TODO: Find where to go based on destinationChoices.
@@ -1269,12 +1269,12 @@ function AposBot() {
                 } else {
                     tempMoveX = destinationChoices.peek()[0][0];
                     tempMoveY = destinationChoices.peek()[0][1];
-                    //console.log("Done " + tempMoveX + ", " + tempMoveY);
+                    ////console.log("Done " + tempMoveX + ", " + tempMoveY);
                 }*/
             }
-            //console.log("MOVING RIGHT NOW!");
+            ////console.log("MOVING RIGHT NOW!");
 
-            //console.log("______Never lied ever in my life.");
+            ////console.log("______Never lied ever in my life.");
 
             return destinationChoices;
         }
