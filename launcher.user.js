@@ -35,56 +35,17 @@ Array.prototype.peek = function() {
 
 var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
 
-function getLatestCommit() {
-    window.jQuery.ajax({
-        url: "https://api.github.com/repos/apostolique/Agar.io-bot/git/refs/heads/master",
-        cache: false,
-        dataType: "jsonp"
-    }).done(function(data) {
-        console.dir(data.data);
-        console.log("hmm: " + data.data.object.sha);
-        sha = data.data.object.sha;
-
-        function update(prefix, name, url) {
-            window.jQuery(document.body).prepend("<div id='" + prefix + "Dialog' style='position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 100; display: none;'>");
-            window.jQuery('#' + prefix + 'Dialog').append("<div id='" + prefix + "Message' style='width: 350px; background-color: #FFFFFF; margin: 100px auto; border-radius: 15px; padding: 5px 15px 5px 15px;'>");
-            window.jQuery('#' + prefix + 'Message').append("<h2>UPDATE TIME!!!</h2>");
-            window.jQuery('#' + prefix + 'Message').append("<p>Grab the update for: <a id='" + prefix + "Link' href='" + url + "' target=\"_blank\">" + name + "</a></p>");
-            window.jQuery('#' + prefix + 'Link').on('click', function() {
-                window.jQuery("#" + prefix + "Dialog").hide();
-                window.jQuery("#" + prefix + "Dialog").remove();
-            });
-            window.jQuery("#" + prefix + "Dialog").show();
-        }
-
-        window.jQuery.get('https://raw.githubusercontent.com/Apostolique/Agar.io-bot/master/launcher.user.js?' + Math.floor((Math.random() * 1000000) + 1), function(data) {
-            var latestVersion = data.replace(/(\r\n|\n|\r)/gm, "");
-            latestVersion = latestVersion.substring(latestVersion.indexOf("// @version") + 11, latestVersion.indexOf("// @grant"));
-
-            latestVersion = parseFloat(latestVersion + 0.0000);
-            var myVersion = parseFloat(aposLauncherVersion + 0.0000);
-
-            if (latestVersion > myVersion) {
-                update("aposLauncher", "launcher.user.js", "https://github.com/Apostolique/Agar.io-bot/blob/" + sha + "/launcher.user.js/");
-            }
-            console.log('Current launcher.user.js Version: ' + myVersion + " on Github: " + latestVersion);
-        });
-
-    }).fail(function() {});
-}
-getLatestCommit();
-
-console.log("Running Bot Launcher!");
+//console.log("Running Bot Launcher!");
 (function(d, e) {
 
     //UPDATE
     function keyAction(e) {
         if (84 == e.keyCode) {
-            console.log("Toggle");
+            //console.log("Toggle");
             toggle = !toggle;
         }
         if (82 == e.keyCode) {
-            console.log("ToggleDraw");
+            //console.log("ToggleDraw");
             toggleDraw = !toggleDraw;
         }
         if (68 == e.keyCode) {
@@ -207,7 +168,7 @@ console.log("Running Bot Launcher!");
 
     function Ra(a) {
         J *= Math.pow(.9, a.wheelDelta / -120 || a.detail || 0);
-        console.log("J: " + J);
+        //console.log("J: " + J);
         //UPDATE
         0.07 > J && (J = 0.07);
         J > 4 / h && (J = 4 / h)
@@ -301,7 +262,7 @@ console.log("Running Bot Launcher!");
 
     function Za() {
         var a = ++Ba;
-        console.log("Find " + y + P);
+        //console.log("Find " + y + P);
         e.ajax(ap + "findServer", {
             error: function() {
                 setTimeout(Za, 1E3)
@@ -351,14 +312,14 @@ console.log("Running Bot Launcher!");
         z = A = null;
         R = 0;
         bo = !1;
-        console.log("Connecting to " + a);
+        //console.log("Connecting to " + a);
         //UPDATE
         serverIP = a;
         q = new WebSocket(a);
         q.binaryType = "arraybuffer";
         q.onopen = function() {
             var a;
-            console.log("socket open");
+            //console.log("socket open");
             a = N(5);
             a.setUint8(0, 254);
             a.setUint32(1, 5, !0);
@@ -376,7 +337,7 @@ console.log("Running Bot Launcher!");
         q.onmessage = ub;
         q.onclose = vb;
         q.onerror = function() {
-            console.log("socket error")
+            //console.log("socket error")
         }
     }
 
@@ -390,7 +351,7 @@ console.log("Running Bot Launcher!");
 
     function vb() {
         bo && (ma = 500);
-        console.log("socket close");
+        //console.log("socket close");
         setTimeout(I, ma);
         ma *= 2
     }
@@ -550,10 +511,10 @@ console.log("Running Bot Launcher!");
 
         //UPDATE
         Object.keys(interNodes).forEach(function(element, index) {
-            //console.log("start: " + interNodes[element].updateTime + " current: " + D + " life: " + (D - interNodes[element].updateTime));
+            ////console.log("start: " + interNodes[element].updateTime + " current: " + D + " life: " + (D - interNodes[element].updateTime));
             var isRemoved = !window.getCells().hasOwnProperty(element);
 
-            //console.log("Time not updated: " + (window.getLastUpdate() - interNodes[element].getUptimeTime()));
+            ////console.log("Time not updated: " + (window.getLastUpdate() - interNodes[element].getUptimeTime()));
             if (isRemoved && (window.getLastUpdate() - interNodes[element].getUptimeTime()) > 3000) {
                 delete interNodes[element];
             } else {
@@ -650,17 +611,17 @@ console.log("Running Bot Launcher!");
         }
         
         if (getPlayer().length == 0 && !reviving && ~~(getCurrentScore() / 100) > 0) {
-            console.log("Dead: " + ~~(getCurrentScore() / 100));
+            //console.log("Dead: " + ~~(getCurrentScore() / 100));
             apos('send', 'pageview');
         }
 
         if (getPlayer().length == 0 && !firstStart) {
-            console.log("Revive");
+            //console.log("Revive");
             setNick(originalName);
             reviving = true;
         } else if (getPlayer().length > 0 && reviving) {
             reviving = false;
-            console.log("Done Reviving!");
+            //console.log("Done Reviving!");
         }
 
         if (T()) {
@@ -685,7 +646,7 @@ console.log("Running Bot Launcher!");
     }
 
     window.opCode = function(a) {
-        console.log("Sending op code.");
+        //console.log("Sending op code.");
         H(parseInt(a));
     }
 
@@ -1228,7 +1189,7 @@ console.log("Running Bot Launcher!");
             f: +a[5],
             d: +a[6]
         });
-        console.log("Hello Facebook?");
+        //console.log("Hello Facebook?");
     }
 
     function La(a) {
@@ -1241,7 +1202,7 @@ console.log("Running Bot Launcher!");
             e("#helloContainer").attr("data-logged-in", "1");
             null != B ? e.ajax(ap + "checkToken", {
                 error: function() {
-                    console.log("Facebook Fail!");
+                    //console.log("Facebook Fail!");
                     B = null;
                     La(a)
                 },
@@ -1252,7 +1213,7 @@ console.log("Running Bot Launcher!");
                         f: +a[1],
                         d: +a[2]
                     });
-                    console.log("Facebook connected!");
+                    //console.log("Facebook connected!");
                 },
                 dataType: "text",
                 method: "POST",
@@ -1261,7 +1222,7 @@ console.log("Running Bot Launcher!");
                 data: B
             }) : e.ajax(ap + "facebookLogin", {
                 error: function() {
-                    console.log("You have a Facebook problem!");
+                    //console.log("You have a Facebook problem!");
                     B = null;
                     e("#helloContainer").attr("data-logged-in", "0")
                 },
@@ -1331,7 +1292,7 @@ console.log("Running Bot Launcher!");
                 dArc = [],
                 dText = [],
                 lines = [],
-                names = ["NotReallyABot"],
+                names = ["Dilma"],
                 firstStart = true;
                 originalName = names[Math.floor(Math.random() * names.length)],
                 sessionScore = 0,
@@ -1910,7 +1871,7 @@ console.log("Running Bot Launcher!");
                 }
 
                 window.setBotIndex = function(a) {
-                    console.log("Changing bot");
+                    //console.log("Changing bot");
                     botIndex = a;
                     setLauncherCustomParameters(window.botList[a]);
                 }
@@ -2531,43 +2492,5 @@ console.log("Running Bot Launcher!");
     }
 })(window, window.jQuery);
 
-(function(i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;
-    i[r] = i[r] || function() {
-        (i[r].q = i[r].q || []).push(arguments)
-    }, i[r].l = 1 * new Date();
-    a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-    a.async = 1;
-    a.src = g;
-    m.parentNode.insertBefore(a, m)
-})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'apos');
-
-apos('create', 'UA-64394184-1', 'auto');
-apos('send', 'pageview');
-
-window.ignoreStream = false;
-window.refreshTwitch = function() {
-    window.jQuery.ajax({
-        url: "https://api.twitch.tv/kraken/streams/apostolique",
-        cache: false,
-        dataType: "jsonp"
-    }).done(function(data) {
-        if (data["stream"] == null) {
-            //console.log("Apostolique is not online!");
-            window.setMessage([]);
-            window.onmouseup = function() {};
-            window.ignoreStream = false;
-        } else {
-            //console.log("Apostolique is online!");
-            if (!window.ignoreStream) {
-                window.setMessage(["twitch.tv/apostolique is online right now!", "Click the screen to open the stream!", "Press E to ignore."]);
-                window.onmouseup = function() {
-                    window.open("http://www.twitch.tv/apostolique");
-                };
-            }
-        }
-    }).fail(function() {});
-}
 setInterval(window.refreshTwitch, 60000);
 window.refreshTwitch();
