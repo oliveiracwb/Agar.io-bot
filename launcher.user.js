@@ -23,7 +23,32 @@ SOFTWARE.*/
 // @grant       none
 // @author      http://www.twitch.tv/apostolique
 // ==/UserScript==
-var aposLauncherVersion = 4.145;
+/*The MIT License (MIT)
+Copyright (c) 2015 Apostolique
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+// ==UserScript==
+// @name        AposLauncher
+// @namespace   AposLauncher
+// @include     http://agar.io/*
+// @version     4.145
+// @grant       none
+// @author      http://www.twitch.tv/apostolique
+// ==/UserScript==
+var aposLauncherVersion = 5;
 
 Number.prototype.mod = function(n) {
     return ((this % n) + n) % n;
@@ -792,7 +817,8 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
         var nbSeconds = 0;
         if (getPlayer().length > 0) {
             //nbSeconds = currentDate.getSeconds() + currentDate.getMinutes() * 60 + currentDate.getHours() * 3600 - lifeTimer.getSeconds() - lifeTimer.getMinutes() * 60 - lifeTimer.getHours() * 3600;
-            nbSeconds = (currentDate.getTime() - lifeTimer.getTime()) / 1000;
+            //aqui
+            nbSeconds = (currentDate.getTime() - lifeTimer.getTime()) / 3000;
         }
 
         bestTime = Math.max(nbSeconds, bestTime);
@@ -807,7 +833,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
         1 < D && (D = 1);
         b = C - ib;
         !T() || W ? (x += b / 2E3, 1 < x && (x = 1)) : (x -= b / 300, 0 > x && (x = 0));
-        0 < x && (f.fillStyle = "#000000", f.globalAlpha = .5 * x, f.fillRect(0, 0, m, r), f.globalAlpha = 1);
+        0 < x && (f.fillStyle = "#000000", f.globalAlpha = 1 * x, f.fillRect(0, 0, m, r), f.globalAlpha = 1);
         ib = C
 
         drawStats(f);
@@ -819,7 +845,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
         for (var i = 0; i < lines.length; i++) {
             d.beginPath();
 
-            d.lineWidth = 5;
+            d.lineWidth = 2;
 
             if (lines[i][4] == 0) {
                 d.strokeStyle = "#FF0000";
@@ -870,9 +896,9 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
             }
             d.beginPath();
 
-            d.lineWidth = 10;
+            d.lineWidth = 2;
             //d.setLineDash([5]);
-            d.globalAlpha = 0.3;
+            d.globalAlpha = 1;
 
             d.arc(circles[i][0], circles[i][1], circles[i][2], 0, 2 * Math.PI, false);
 
