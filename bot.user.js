@@ -30,6 +30,8 @@ SOFTWARE.*/
 // ==/UserScript==
 
 var aposBotVersion = 3.645;
+var idangerDistance = 1;
+var imergesize = -50;
 
 //TODO: Team mode
 //      Detect when people are merging
@@ -49,68 +51,13 @@ Array.prototype.peek = function() {
 };
 
 var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
-function getLatestCommit() {
-    window.jQuery.ajax({
-            url: "https://api.github.com/repos/apostolique/Agar.io-bot/git/refs/heads/master",
-            cache: false,
-            dataType: "jsonp"
-        }).done(function(data) {
-            console.dir(data.data);
-            //console.log("hmm: " + data.data.object.sha);
-            sha = data.data.object.sha;
-
-            function update(prefix, name, url) {
-                window.jQuery(document.body).prepend("<div id='" + prefix + "Dialog' style='position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 100; display: none;'>");
-                window.jQuery('#' + prefix + 'Dialog').append("<div id='" + prefix + "Message' style='width: 350px; background-color: #FFFFFF; margin: 100px auto; border-radius: 15px; padding: 5px 15px 5px 15px;'>");
-                window.jQuery('#' + prefix + 'Message').append("<h2>UPDATE TIME!!!</h2>");
-                window.jQuery('#' + prefix + 'Message').append("<p>Grab the update for: <a id='" + prefix + "Link' href='" + url + "' target=\"_blank\">" + name + "</a></p>");
-                window.jQuery('#' + prefix + 'Link').on('click', function() {
-                    window.jQuery("#" + prefix + "Dialog").hide();
-                    window.jQuery("#" + prefix + "Dialog").remove();
-                });
-                window.jQuery("#" + prefix + "Dialog").show();
-            }
-
-            $.get('https://raw.githubusercontent.com/Apostolique/Agar.io-bot/master/bot.user.js?' + Math.floor((Math.random() * 1000000) + 1), function(data) {
-                var latestVersion = data.replace(/(\r\n|\n|\r)/gm,"");
-                latestVersion = latestVersion.substring(latestVersion.indexOf("// @version")+11,latestVersion.indexOf("// @grant"));
-
-                latestVersion = parseFloat(latestVersion + 0.0000);
-                var myVersion = parseFloat(aposBotVersion + 0.0000); 
-                
-                if(latestVersion > myVersion)
-                {
-                    update("aposBot", "bot.user.js", "https://github.com/Apostolique/Agar.io-bot/blob/" + sha + "/bot.user.js/");
-                }
-                //console.log('Current bot.user.js Version: ' + myVersion + " on Github: " + latestVersion);
-            });
-
-        }).fail(function() {});
-}
-getLatestCommit();
-
 //console.log("Running Apos Bot!");
 
 var f = window;
 var g = window.jQuery;
 
-
-//console.log("Apos Bot!");
-
 window.botList = window.botList || [];
 
-/*function QuickBot() {
-    this.name = "QuickBot V1";
-    this.customParameters = {};
-    this.keyAction = function(key) {};
-    this.displayText = function() {return [];};
-    this.mainLoop = function() {
-        return [screenToGameX(getMouseX()),
-                screenToGameY(getMouseY())];
-    };
-}
-
-window.botList.push(new QuickBot());*/
 
 function AposBot() {
     this.name = "AposBot " + aposBotVersion;
@@ -146,7 +93,8 @@ function AposBot() {
         //console.log("Merge:" + debugString);
         }
         
-        return dist <= -50;
+        return dist <= imergesize; 
+
     };
 
     //Given an angle value that was gotten from valueAndleBased(),
@@ -586,16 +534,6 @@ function AposBot() {
         var cx = blob2.x;
         var cy = blob2.y;
 
-        //var radius = blob2.size;
-
-        /*if (blob2.isVirus()) {
-            radius = blob1.size;
-        } else if(canSplit(blob1, blob2)) {
-            radius += splitDistance;
-        } else {
-            radius += blob1.size * 2;
-        }*/
-
         var shouldInvert = false;
 
         var tempRadius = this.computeDistance(px, py, cx, cy);
@@ -626,12 +564,12 @@ function AposBot() {
         var angleRight = this.getAngle(cx + tb.x, cy + tb.y, px, py);
         var angleDistance = this.mod(angleRight - angleLeft, 360);
 
-        /*if (shouldInvert) {
+        if (shouldInvert) {
             var temp = angleLeft;
             angleLeft = this.mod(angleRight + 180, 360);
             angleRight = this.mod(temp + 180, 360);
             angleDistance = this.mod(angleRight - angleLeft, 360);
-        }*/
+        }
 
         return [angleLeft, angleDistance, [cx + tb.x, cy + tb.y],
             [cx + ta.x, cy + ta.y]
@@ -645,10 +583,6 @@ function AposBot() {
     },
 
     this.addWall = function(listToUse, blob) {
-        //var mapSizeX = Math.abs(f.getMapStartX - f.getMapEndX);
-        //var mapSizeY = Math.abs(f.getMapStartY - f.getMapEndY);
-        //var distanceFromWallX = mapSizeX/3;
-        //var distanceFromWallY = mapSizeY/3;
         var distanceFromWallY = 2000;
         var distanceFromWallX = 2000;
         if (blob.x < getMapStartX() + distanceFromWallX) {
@@ -768,7 +702,7 @@ function AposBot() {
             }
         }
 
-        removeList.sort(function(a, b){return b-a;});
+        //removeList.sort(function(a, b){return b-a;});
 
         for (var i = 0; i < removeList.length; i++) {
             newListToUse.splice(removeList[i], 1);
@@ -796,8 +730,8 @@ function AposBot() {
 
         ////console.log("Adding badAngles: " + leftAngle + ", " + rightAngle + " diff: " + difference);
 
-        var lineLeft = this.followAngle(leftAngle, blob1.x, blob1.y, 150 + blob1.size - index * 10);
-        var lineRight = this.followAngle(rightAngle, blob1.x, blob1.y, 150 + blob1.size - index * 10);
+        var lineLeft = this.followAngle(leftAngle, blob1.x, blob1.y, idangerDistance + blob1.size - index * 10);
+        var lineRight = this.followAngle(rightAngle, blob1.x, blob1.y, idangerDistance + blob1.size - index * 10);
 
         if (blob2.isVirus()) {
             drawLine(blob1.x, blob1.y, lineLeft[0], lineLeft[1], 6);
@@ -893,13 +827,7 @@ function AposBot() {
 
                 //Loops only for one cell for now.
                 for (var k = 0; /*k < player.length*/ k < 1; k++) {
-
-                    ////console.log("Working on blob: " + k);
-
                     drawCircle(player[k].x, player[k].y, player[k].size + this.splitDistance, 5);
-                    //drawPoint(player[0].x, player[0].y - player[0].size, 3, "" + Math.floor(player[0].x) + ", " + Math.floor(player[0].y));
-
-                    //var allDots = processEverything(interNodes);
 
                     //loop through everything that is on the screen and
                     //separate everything in it's own category.
@@ -940,9 +868,9 @@ function AposBot() {
 
                         var enemyDistance = this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, player[k].x, player[k].y);
 
-                        var splitDangerDistance = allPossibleThreats[i].size + this.splitDistance + 150;
+                        var splitDangerDistance = allPossibleThreats[i].size + this.splitDistance + idangerDistance;
 
-                        var normalDangerDistance = allPossibleThreats[i].size + 150;
+                        var normalDangerDistance = allPossibleThreats[i].size + idangerDistance;
 
                         var shiftDistance = player[k].size;
 
