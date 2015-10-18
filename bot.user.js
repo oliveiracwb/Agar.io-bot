@@ -6,6 +6,7 @@
 // @grant       none
 // @author      http://www.twitch.tv/apostolique
 // ==/UserScript==
+//mysize...
 
 var aposBotVersion = 3.645;
 var idangerDistance = 1;
@@ -779,6 +780,7 @@ function AposBot() {
             var destinationChoices = []; //destination, size, danger
 
             //Just to make sure the player is alive.
+            mysize = player[0].size;
             if (player.length > 0) {
 
                 //Loop through all the player's cells.
@@ -843,13 +845,15 @@ function AposBot() {
                         var splitDangerDistance = allPossibleThreats[i].size + this.splitDistance + idangerDistance;
 
                         var normalDangerDistance = allPossibleThreats[i].size + idangerDistance;
-
+                        
+                        bigball = ((player[k].size * 8) > mysize );
+                             
                         var shiftDistance = player[k].size;
 
                         ////console.log("Found distance.");
-
-                        var enemyCanSplit = this.canSplit(player[k], allPossibleThreats[i]);
-                        var secureDistance = (enemyCanSplit ? splitDangerDistance : normalDangerDistance);
+                         
+                        var enemyCanSplit = this.canSplit(player[k], allPossibleThreats[i]) && !bigball;
+                        var secureDistance = (enemyCanSplit ? splitDangerDistance : normalDangerDistance +5 );
                         
                         for (var j = clusterAllFood.length - 1; j >= 0 ; j--) {
                             if (this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, clusterAllFood[j][0], clusterAllFood[j][1]) < secureDistance + shiftDistance)
@@ -892,7 +896,6 @@ function AposBot() {
                             var tempOb = this.getAngleRange(player[k], allPossibleThreats[i], i, splitDangerDistance + shiftDistance);
                             var angle1 = tempOb[0];
                             var angle2 = this.rangeToAngle(tempOb);
-
                             obstacleList.push([[angle1, true], [angle2, false]]);
                         } else if (!enemyCanSplit && enemyDistance < normalDangerDistance + shiftDistance) {
                             var tempOb = this.getAngleRange(player[k], allPossibleThreats[i], i, normalDangerDistance + shiftDistance);
