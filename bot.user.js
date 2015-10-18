@@ -1,25 +1,3 @@
-/*The MIT License (MIT)
-
-Copyright (c) 2015 Apostolique
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
-
 // ==UserScript==
 // @name        AposBot
 // @namespace   AposBot
@@ -32,26 +10,13 @@ SOFTWARE.*/
 var aposBotVersion = 3.645;
 var idangerDistance = 1;
 var imergesize = -50;
-
-//TODO: Team mode
-//      Detect when people are merging
-//      Split to catch smaller targets
-//      Angle based cluster code
-//      Better wall code
-//      In team mode, make allies be obstacles.
-
-/*
-Number.prototype.mod = function(n) {
-    return ((this % n) + n) % n;
-};
-*/
+var oneOrMulti = 1; // 1 for one; other for multi
 
 Array.prototype.peek = function() {
     return this[this.length - 1];
 };
 
 var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
-//console.log("Running Apos Bot!");
 
 var f = window;
 var g = window.jQuery;
@@ -217,7 +182,7 @@ function AposBot() {
     };
 
     this.isFood = function(blob, cell) {
-        if (!cell.isVirus() && this.compareSize(cell, blob, 1.33) || (cell.size <= 13)) {
+        if (!cell.isVirus() && this.compareSize(cell, blob, 1.33) || (cell.size <= 40)) {
             return true;
         }
         return false;
@@ -291,10 +256,7 @@ function AposBot() {
                 }
                 else {if (that.isVirus(null, listToUse[element])==false) {mergeList.push(listToUse[element]);}
                     }
-            }/*else if(isMe && (getBlobCount(getPlayer()) > 0)){
-                //Attempt to make the other cell follow the mother one
-                foodElementList.push(listToUse[element]);
-            }*/
+            }
         });
 
         foodList = [];
@@ -304,6 +266,7 @@ function AposBot() {
         
         ////console.log("Merglist length: " +  mergeList.length)
         //cell merging
+        /* aqui
         for (var i = 0; i < mergeList.length; i++) {
             for (var z = 0; z < mergeList.length; z++) {
                 if (z != i && that.isMerging(mergeList[i], mergeList[z])) { //z != i && 
@@ -330,7 +293,7 @@ function AposBot() {
                                           
                 }
             }
-        }
+        }*/
         
         return [foodList, threatList, virusList, splitTargetList];
     };
@@ -702,7 +665,8 @@ function AposBot() {
             }
         }
 
-        //removeList.sort(function(a, b){return b-a;});
+        //aqui
+        removeList.sort(function(a, b){return b-a;});
 
         for (var i = 0; i < removeList.length; i++) {
             newListToUse.splice(removeList[i], 1);
@@ -826,7 +790,14 @@ function AposBot() {
 
 
                 //Loops only for one cell for now.
-                for (var k = 0; /*k < player.length*/ k < 1; k++) {
+                if (oneOrMulti == 1)
+                {
+                    ilength = 1;
+                }
+                else { 
+                        ilength = player.length;
+                     }
+                for (var k = 0; k < ilength; k++) {
                     drawCircle(player[k].x, player[k].y, player[k].size + this.splitDistance, 5);
 
                     //loop through everything that is on the screen and
@@ -854,10 +825,11 @@ function AposBot() {
 
                     //Loop through all the cells that were identified as threats.
                     for (var i = 0; i < allPossibleThreats.length; i++) {
-
+                        // Acho que é aqui
+                        // player[k].size
                         var enemyDistance = this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, player[k].x, player[k].y, allPossibleThreats[i].size);
 
-                        allPossibleThreats[i].enemyDist = enemyDistance;
+                        allPossibleThreats[i].enemyDist = enemyDistance + 3;
                     }
 
                     allPossibleThreats.sort(function(a, b){
@@ -894,7 +866,7 @@ function AposBot() {
                             drawCircle(allPossibleThreats[i].x, allPossibleThreats[i].y, normalDangerDistance + shiftDistance, 6);
                         }
 
-                        if (allPossibleThreats[i].danger && getLastUpdate() - allPossibleThreats[i].dangerTimeOut > 3000) {
+                        if (allPossibleThreats[i].danger && getLastUpdate() - allPossibleThreats[i].dangerTimeOut > 1000) {
 
                             allPossibleThreats[i].danger = false;
                         }
