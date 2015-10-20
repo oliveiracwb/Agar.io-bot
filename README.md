@@ -2,12 +2,12 @@
 Abaixo tem as considerações gerais do gringo que adaptou o bot que um programador C fez. Foi bacana porque ele introduziu interatividade. Infelizmente achei as funcoes dele muito pesadas e para mim foi apenas um passatempo. Dei uns tapas, melhorei o que achei necessario, tirei codigos que nao agregavam e descomentei os que o primeiro gringo havia feito.
 
 O Bot agora:
-a) trava menos - ainda trava
-b) Tem chegado facil a 800 de tamanho, desde que não se depare com grupos
-c) não é engolido facilmente
-d) pode ou nao comer outros players
-e) tudo pode ser ajustado nas variaveis dos cabecalhos
-E é isso.. abaixo segue reademe.md do gringo
+* trava menos - ainda trava
+* Tem chegado facil a 800 de tamanho, desde que não se depare com grupos
+* não é engolido facilmente
+* pode ou nao comer outros players
+* tudo pode ser ajustado nas variaveis dos cabecalhos
+E é isso.. abaixo segue readme.md do gringo
 
 # Agar.io-bot
 
