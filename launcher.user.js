@@ -7,6 +7,7 @@
 // @author      http://www.twitch.tv/apostolique
 // ==/UserScript==
 var aposLauncherVersion = 4.145;
+var perseguebolas = 0;
 
 Number.prototype.mod = function(n) {
     return ((this % n) + n) % n;
@@ -120,7 +121,8 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
             if (!window.jQuery('#nick').is(":focus")) {
                 32 != l.keyCode || a || (V(), H(17), a = !0);
                 81 != l.keyCode || b || (H(18), b = !0);
-                87 != l.keyCode || c || (V(), H(21), c = !0);
+                //aqui88
+                87 != l.keyCode || c || (V(), H(21));
                 27 == l.keyCode && Sa(!0);
 
                 //UPDATE
@@ -775,8 +777,8 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
         var nbSeconds = 0;
         if (getPlayer().length > 0) {
             //nbSeconds = currentDate.getSeconds() + currentDate.getMinutes() * 60 + currentDate.getHours() * 3600 - lifeTimer.getSeconds() - lifeTimer.getMinutes() * 60 - lifeTimer.getHours() * 3600;
-            //aqui
-            nbSeconds = (currentDate.getTime() - lifeTimer.getTime()) / 3000;
+            //aqui88
+            nbSeconds = (currentDate.getTime() - lifeTimer.getTime()) / 1000;
         }
 
         bestTime = Math.max(nbSeconds, bestTime);
@@ -1265,7 +1267,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
                 dArc = [],
                 dText = [],
                 lines = [],
-                names = ["Dilma"],
+                names = ["ImortalBot"],
                 firstStart = true;
                 originalName = names[Math.floor(Math.random() * names.length)],
                 sessionScore = 0,
@@ -2014,7 +2016,8 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
                     danger: false,
                     dangerTimeOut: 0,
                     isNotMoving: function() {
-                        return (this.x == this.s && this.y == this.t);
+                        //aqui99
+                        return ( (this.x == this.s && this.y == this.t ) || (perseguebolas == 1));
                     },
                     isVirus: function() {
                         return this.h;
