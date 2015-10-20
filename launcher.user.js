@@ -7,7 +7,7 @@
 // @author      http://www.twitch.tv/apostolique
 // ==/UserScript==
 var aposLauncherVersion = 4.145;
-var perseguebolas = 0;
+var perseguebolas = 1;
 
 Number.prototype.mod = function(n) {
     return ((this % n) + n) % n;
@@ -1267,7 +1267,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
                 dArc = [],
                 dText = [],
                 lines = [],
-                names = ["ImortalBot"],
+                names = ["Dilma"],
                 firstStart = true;
                 originalName = names[Math.floor(Math.random() * names.length)],
                 sessionScore = 0,
