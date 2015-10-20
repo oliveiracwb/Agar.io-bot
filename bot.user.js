@@ -19,10 +19,10 @@ var g = window.jQuery;
 
 this.idangerDistance = 60;
 this.imergesize = -50;
-this.oneOrMulti = 1; // 1 for one; other for multi
-this.hugeball = 2;
+this.oneOrMulti = 2; // 1 for one; other for multi
+this.hugeball = 10;
 this.iCalculateDistance = 2;
-this.iSplitDistance = 710;
+this.iSplitDistance = 600;
 
 window.botList = window.botList || [];
 
@@ -137,9 +137,16 @@ function AposBot() {
         }
         return false;
     },
+    this.compareHuge = function(player1, player2, ratio) {
+        if (player1.size * player1.size * ratio > player2.size * player2.size) {
+            return true;
+        }
+        return false;
+    },
 
     this.canSplit = function(player1, player2) {
-        return this.compareSize(player1, player2, 2.8) && !this.compareSize(player1, player2, 20);
+        return this.compareSize(player1, player2, 2.8 ) && !this.compareSize(player1, player2, 20) && 
+            this.compareHuge(player1, player2, hugeball);
     };
 
     this.isItMe = function(player, cell) {
@@ -809,19 +816,19 @@ function AposBot() {
 
                     for (var i = 0; i < allPossibleThreats.length; i++) {
 
-                        var enemyDistance = this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, player[k].x, player[k].y);
+                        var enemyDistance = this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, player[k].x, player[k].y) -1;
 
                         var splitDangerDistance = allPossibleThreats[i].size + this.splitDistance + idangerDistance;
 
                         var normalDangerDistance = allPossibleThreats[i].size + idangerDistance;
                         
-                        bigball = ((player[k].size * hugeball) > mysize );
                         //aqui88                             
                         var shiftDistance = player[k].size +15;
 
                         ////console.log("Found distance.");
                          
-                        var enemyCanSplit = this.canSplit(player[k], allPossibleThreats[i]) && !bigball;
+                        var enemyCanSplit = this.canSplit(player[k], allPossibleThreats[i]);
+                        
                         var secureDistance = (enemyCanSplit ? splitDangerDistance : normalDangerDistance +5 );
                         
                         for (var j = clusterAllFood.length - 1; j >= 0 ; j--) {
