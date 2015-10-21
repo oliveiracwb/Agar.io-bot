@@ -7,7 +7,7 @@
 // @author      http://www.twitch.tv/apostolique
 // ==/UserScript==
 var aposLauncherVersion = 4.145;
-var perseguebolas = 1;
+var perseguebolas = 0;
 
 Number.prototype.mod = function(n) {
     return ((this % n) + n) % n;
@@ -778,7 +778,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
         if (getPlayer().length > 0) {
             //nbSeconds = currentDate.getSeconds() + currentDate.getMinutes() * 60 + currentDate.getHours() * 3600 - lifeTimer.getSeconds() - lifeTimer.getMinutes() * 60 - lifeTimer.getHours() * 3600;
             //aqui88
-            nbSeconds = (currentDate.getTime() - lifeTimer.getTime()) / 1000;
+            nbSeconds = (currentDate.getTime() - lifeTimer.getTime()) / 3000;
         }
 
         bestTime = Math.max(nbSeconds, bestTime);
@@ -2017,7 +2017,7 @@ var sha = "efde0488cc2cc176db48dd23b28a20b90314352b";
                     dangerTimeOut: 0,
                     isNotMoving: function() {
                         //aqui99
-                        return ( (this.x == this.s && this.y == this.t ) || (perseguebolas == 1));
+                        return ( (this.x == this.s || this.x +1 == this.s || this.x  == this.s +1 ) && (this.y == this.t || this.y == this.t +1  || this.y +1 == this.t ) || (perseguebolas == 1));
                     },
                     isVirus: function() {
                         return this.h;
