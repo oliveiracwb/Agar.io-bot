@@ -19,8 +19,8 @@ var g = window.jQuery;
 
 this.idangerDistance = 60;
 this.imergesize = -50;
-this.oneOrMulti = 2; // 1 for one; other for multi
-this.hugeball = 10;
+this.oneOrMulti = 1; // 1 for one; other for multi
+this.hugeball = 5;
 this.iCalculateDistance = 2;
 this.iSplitDistance = 600;
 
