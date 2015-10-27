@@ -1,12 +1,13 @@
 # Agar.io-br
-Abaixo tem as considerações gerais do gringo que adaptou o bot que um programador C fez. Foi bacana porque ele introduziu interatividade. Infelizmente achei as funcoes dele muito pesadas e para mim foi apenas um passatempo. Dei uns tapas, melhorei o que achei necessario, tirei codigos que nao agregavam e descomentei os que o primeiro gringo havia feito.
+Abaixo tem as considerações gerais do gringo que adaptou o bot que outro programador C fez. 
+Inclui a perseguição a outros bots baseada em pesos de equivalência. Ainda tenho de otimizar o código todo, pois está pesado e após alguns re-spawns o chrome/firefox trava (acho que é gc).
 
 O Bot agora:
 * trava menos - ainda trava
-* Tem chegado facil a 800 de tamanho, desde que não se depare com grupos
+* Tem chegado facil a 600 de tamanho, desde que não se depare com grupos de mercenários
 * não é engolido facilmente
 * pode ou nao comer outros players
-* tudo pode ser ajustado nas variaveis dos cabecalhos
+* condigurações gerais já podem ser ajustadas nas variaveis dos cabecalhos
 
 # Agar.io-bot
 
