@@ -33,6 +33,10 @@ function AposBot() {
         }
     };
 
+    this.displayText = function() {
+        return ["Q - Follow Mouse: " + (this.toggleFollow ? "On" : "Off")];
+    };
+
     // Using mod function instead the prototype directly as it is very slow
     this.mod = function(num, mod) {
         if (mod & (mod - 1) === 0 && mod !== 0) {
@@ -46,6 +50,22 @@ function AposBot() {
     //returns a new value that scales it appropriately.
     this.paraAngleValue = function(angleValue, range) {
         return (15 / (range[1])) * (angleValue * angleValue) - (range[1] / 6);
+    };
+
+    this.getMass = function(size) {
+        return Math.pow(size / 10, 2);
+    };
+
+    this.valueAngleBased = function(angle, range) {
+        var leftValue = this.mod(angle - range[0], 360);
+        var rightValue = this.mod(this.rangeToAngle(range) - angle, 360);
+
+        var bestValue = Math.min(leftValue, rightValue);
+
+        if (bestValue <= range[1]) {
+            return this.paraAngleValue(bestValue, range);
+        }
+        return -1;
     };
 
     this.computeDistance = function(x1, y1, x2, y2, s1, s2) {
@@ -73,6 +93,23 @@ function AposBot() {
         var distance = xdis + ydis;
 
         return distance;
+    };
+
+    this.computeDistanceFromCircleEdgeDeprecated = function(x1, y1, x2, y2, s2) {
+        var tempD = this.computeDistance(x1, y1, x2, y2);
+
+        var offsetX = 0;
+        var offsetY = 0;
+
+        var ratioX = tempD / (x1 - x2);
+        var ratioY = tempD / (y1 - y2);
+
+        offsetX = x1 - (s2 / ratioX);
+        offsetY = y1 - (s2 / ratioY);
+
+        //drawPoint(offsetX, offsetY, 5, "");
+
+        return this.computeDistance(x2, y2, offsetX, offsetY);
     };
 
     this.compareSize = function(player1, player2, ratio) {
@@ -157,6 +194,10 @@ function AposBot() {
             return true;
         }
         return false;
+    };
+
+    this.getTimeToRemerge = function(mass){
+        return ((mass*0.02) + 30);
     };
 
     this.separateListBasedOnFunction = function(that, listToUse, blob) {
@@ -247,10 +288,10 @@ function AposBot() {
 
         if (x1 == x2) {
             if (y1 < y2) {
-                return 270; //aqui100 271
+                return 271;
                 //return 89;
             } else {
-                return 90; //aqui100 89
+                return 89;
             }
         }
 
@@ -303,6 +344,41 @@ function AposBot() {
         } else {
             return coords[0];
         }
+    };
+
+    //Using a line formed from point a to b, tells if point c is on S side of that line.
+    this.isSideLine = function(a, b, c) {
+        if ((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]) > 0) {
+            return true;
+        }
+        return false;
+    };
+
+    //angle range2 is within angle range2
+    //an Angle is a point and a distance between an other point [5, 40]
+    this.angleRangeIsWithin = function(range1, range2) {
+        if (range2[0] == this.mod(range2[0] + range2[1], 360)) {
+            return true;
+        }
+        ////console.log("r1: " + range1[0] + ", " + range1[1] + " ... r2: " + range2[0] + ", " + range2[1]);
+
+        var distanceFrom0 = this.mod(range1[0] - range2[0], 360);
+        var distanceFrom1 = this.mod(range1[1] - range2[0], 360);
+
+        if (distanceFrom0 < range2[1] && distanceFrom1 < range2[1] && distanceFrom0 < distanceFrom1) {
+            return true;
+        }
+        return false;
+    };
+
+    this.angleRangeIsWithinInverted = function(range1, range2) {
+        var distanceFrom0 = this.mod(range1[0] - range2[0], 360);
+        var distanceFrom1 = this.mod(range1[1] - range2[0], 360);
+
+        if (distanceFrom0 < range2[1] && distanceFrom1 < range2[1] && distanceFrom0 > distanceFrom1) {
+            return true;
+        }
+        return false;
     };
 
     this.angleIsWithin = function(angle, range) {
@@ -937,16 +1013,40 @@ function AposBot() {
                         var destination = this.followAngle(shiftedAngle, player[k].x, player[k].y, distance);
                         destinationChoices = destination;
                         drawLine(player[k].x, player[k].y, destination[0], destination[1], 1);
-                    } /*else {
+                    } else {
                         //If there are no enemies around and no food to eat.
                         destinationChoices = [tempMoveX, tempMoveY];
-                    }*/
+                    }
                     drawPoint(tempPoint[0], tempPoint[1], tempPoint[2], "");
                     tempPoint[2] = 1;
 
                     ////console.log("Done working on blob: " + i);
                 }
 
+                //TODO: Find where to go based on destinationChoices.
+                /*var dangerFound = false;
+                for (var i = 0; i < destinationChoices.length; i++) {
+                    if (destinationChoices[i][2]) {
+                        dangerFound = true;
+                        break;
+                    }
+                }
+
+                destinationChoices.sort(function(a, b){return b[1] - a[1]});
+
+                if (dangerFound) {
+                    for (var i = 0; i < destinationChoices.length; i++) {
+                        if (destinationChoices[i][2]) {
+                            tempMoveX = destinationChoices[i][0][0];
+                            tempMoveY = destinationChoices[i][0][1];
+                            break;
+                        }
+                    }
+                } else {
+                    tempMoveX = destinationChoices.peek()[0][0];
+                    tempMoveY = destinationChoices.peek()[0][1];
+                    //console.log("Done " + tempMoveX + ", " + tempMoveY);
+                }*/
             }
             ////console.log("MOVING RIGHT NOW!");
 
