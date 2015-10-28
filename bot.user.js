@@ -6,8 +6,6 @@
 // @grant       none
 // @author      http://www.twitch.tv/apostolique
 // ==/UserScript==
-//mysize...
-
 
 Array.prototype.peek = function() {
     return this[this.length - 1];
@@ -20,11 +18,10 @@ var g = window.jQuery;
 this.idangerDistance = 5;
 this.imergesize = 5;
 this.oneOrMulti = 1; // 1 for one; other for multi
-this.hugeball = 2;
-this.iSplitDistance = 600;
+this.hugeball = 10;
+this.iSplitDistance = 710;
 
 window.botList = window.botList || [];
-
 
 function AposBot() {
     this.name = "AposBot 3.645"  ;
@@ -32,13 +29,8 @@ function AposBot() {
     this.toggleFollow = false;
     this.keyAction = function(key) {
         if (81 == key.keyCode) {
-            //console.log("Toggle Follow Mouse!");
             this.toggleFollow = !this.toggleFollow;
         }
-    };
-
-    this.displayText = function() {
-        return ["Q - Follow Mouse: " + (this.toggleFollow ? "On" : "Off")];
     };
 
     // Using mod function instead the prototype directly as it is very slow
@@ -54,22 +46,6 @@ function AposBot() {
     //returns a new value that scales it appropriately.
     this.paraAngleValue = function(angleValue, range) {
         return (15 / (range[1])) * (angleValue * angleValue) - (range[1] / 6);
-    };
-
-    this.getMass = function(size) {
-        return Math.pow(size / 10, 2);
-    };
-
-    this.valueAngleBased = function(angle, range) {
-        var leftValue = this.mod(angle - range[0], 360);
-        var rightValue = this.mod(this.rangeToAngle(range) - angle, 360);
-
-        var bestValue = Math.min(leftValue, rightValue);
-
-        if (bestValue <= range[1]) {
-            return this.paraAngleValue(bestValue, range);
-        }
-        return -1;
     };
 
     this.computeDistance = function(x1, y1, x2, y2, s1, s2) {
@@ -99,28 +75,8 @@ function AposBot() {
         return distance;
     };
 
-    this.computeDistanceFromCircleEdgeDeprecated = function(x1, y1, x2, y2, s2) {
-        var tempD = this.computeDistance(x1, y1, x2, y2);
-
-        var offsetX = 0;
-        var offsetY = 0;
-
-        var ratioX = tempD / (x1 - x2);
-        var ratioY = tempD / (y1 - y2);
-
-        offsetX = x1 - (s2 / ratioX);
-        offsetY = y1 - (s2 / ratioY);
-
-        //drawPoint(offsetX, offsetY, 5, "");
-
-        return this.computeDistance(x2, y2, offsetX, offsetY);
-    };
-
     this.compareSize = function(player1, player2, ratio) {
-        if (player1.size * player1.size * ratio < player2.size * player2.size) {
-            return true;
-        }
-        return false;
+        return (player1.size * player1.size * ratio < player2.size * player2.size) ;
     },
     this.compareHuge = function(player1, player2, ratio) {
         if (player1.size * player1.size * ratio > player2.size * player2.size) {
@@ -131,7 +87,7 @@ function AposBot() {
 
     this.canSplit = function(player1, player2) {
         return this.compareSize(player1, player2, 2.8 ) && !this.compareSize(player1, player2, 20) && 
-            this.compareHuge(player1, player2, hugeball);
+            this.compareHuge(player1, player2, hugeball) && player1.size > 80;
     };
 
     this.isItMe = function(player, cell) {
@@ -175,18 +131,11 @@ function AposBot() {
     };
 
     this.isFood = function(blob, cell) {
-        if (!cell.isVirus() && this.compareSize(cell, blob, 1.4) || (cell.size <= 40)) {
-            return true;
-        }
-        return false;
+        return (!cell.isVirus() && this.compareSize(cell, blob, 1.4) || (cell.size <= 40));
     };
 
     this.isThreat = function(blob, cell) {
-        
-        if (!cell.isVirus() && this.compareSize(blob, cell, 1.30)) {
-            return true;
-        }
-        return false;
+        return (!cell.isVirus() && this.compareSize(blob, cell, 1.30));
     };
 
     this.isVirus = function(blob, cell) {
@@ -208,10 +157,6 @@ function AposBot() {
             return true;
         }
         return false;
-    };
-
-    this.getTimeToRemerge = function(mass){
-        return ((mass*0.02) + 30);
     };
 
     this.separateListBasedOnFunction = function(that, listToUse, blob) {
@@ -302,10 +247,10 @@ function AposBot() {
 
         if (x1 == x2) {
             if (y1 < y2) {
-                return 271;
+                return 270; //aqui100 271
                 //return 89;
             } else {
-                return 89;
+                return 90; //aqui100 89
             }
         }
 
@@ -313,24 +258,23 @@ function AposBot() {
     };
 
     this.slope = function(x1, y1, x2, y2) {
-        var m = (y1 - y2) / (x1 - x2);
-
-        return m;
+        //var m = ;
+        return (y1 - y2) / (x1 - x2);
     };
 
     this.slopeFromAngle = function(degree) {
+        /*
         if (degree == 270) {
-            degree = 271;
+            degree = 270;
         } else if (degree == 90) {
-            degree = 91;
-        }
+            degree = 90;
+        }*/
         return Math.tan((degree - 180) / 180 * Math.PI);
     };
 
     //Given two points on a line, finds the slope of a perpendicular line crossing it.
     this.inverseSlope = function(x1, y1, x2, y2) {
-        var m = this.slope(x1, y1, x2, y2);
-        return (-1) / m;
+        return (-1) /  this.slope(x1, y1, x2, y2);
     };
 
     //Given a slope and an offset, returns two points on that line.
@@ -361,41 +305,6 @@ function AposBot() {
         }
     };
 
-    //Using a line formed from point a to b, tells if point c is on S side of that line.
-    this.isSideLine = function(a, b, c) {
-        if ((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]) > 0) {
-            return true;
-        }
-        return false;
-    };
-
-    //angle range2 is within angle range2
-    //an Angle is a point and a distance between an other point [5, 40]
-    this.angleRangeIsWithin = function(range1, range2) {
-        if (range2[0] == this.mod(range2[0] + range2[1], 360)) {
-            return true;
-        }
-        ////console.log("r1: " + range1[0] + ", " + range1[1] + " ... r2: " + range2[0] + ", " + range2[1]);
-
-        var distanceFrom0 = this.mod(range1[0] - range2[0], 360);
-        var distanceFrom1 = this.mod(range1[1] - range2[0], 360);
-
-        if (distanceFrom0 < range2[1] && distanceFrom1 < range2[1] && distanceFrom0 < distanceFrom1) {
-            return true;
-        }
-        return false;
-    };
-
-    this.angleRangeIsWithinInverted = function(range1, range2) {
-        var distanceFrom0 = this.mod(range1[0] - range2[0], 360);
-        var distanceFrom1 = this.mod(range1[1] - range2[0], 360);
-
-        if (distanceFrom0 < range2[1] && distanceFrom1 < range2[1] && distanceFrom0 > distanceFrom1) {
-            return true;
-        }
-        return false;
-    };
-
     this.angleIsWithin = function(angle, range) {
         var diff = this.mod(this.rangeToAngle(range) - angle, 360);
         if (diff >= 0 && diff <= range[1]) {
@@ -406,10 +315,6 @@ function AposBot() {
 
     this.rangeToAngle = function(range) {
         return this.mod(range[0] + range[1], 360);
-    };
-
-    this.anglePair = function(range) {
-        return (range[0] + ", " + this.rangeToAngle(range) + " range: " + range[1]);
     };
 
     this.computeAngleRanges = function(blob1, blob2) {
@@ -441,13 +346,6 @@ function AposBot() {
         }
 
         //drawPoint(blob2.x, blob2.y, 3, "" + blob1Range);
-    };
-
-    this.debugAngle = function(angle, text) {
-        var player = getPlayer();
-        var line1 = this.followAngle(angle, player[0].x, player[0].y, 300);
-        drawLine(player[0].x, player[0].y, line1[0], line1[1], 5);
-        //drawPoint(line1[0], line1[1], 5, "" + text);
     };
 
     //TODO: Don't let this function do the radius math.
@@ -741,24 +639,7 @@ function AposBot() {
             //Just to make sure the player is alive.
             mysize = player[0].size;
             if (player.length > 0) {
-
-                //Loop through all the player's cells.
-                /*for (var k = 0; k < player.length; k++) {
-                    if (true) {
-                        drawPoint(player[k].x, player[k].y + player[k].size, 0, "" + (player[k].size) + " / " + (30000 + (player[k].birthMass * 57) - (getLastUpdate() - player[k].birth)) + " / " + player[k].birthMass);
-                    }
-                }*/
-
-
-                //Loops only for one cell for now.
-                if (oneOrMulti == 1)
-                {
-                    ilength = 1;
-                }
-                else { 
-                        ilength = player.length;
-                     }
-                for (var k = 0; k < ilength; k++) {
+                for (var k = 0; k < 1; k++) {
                     drawCircle(player[k].x, player[k].y, player[k].size + this.splitDistance, 5);
 
                     //loop through everything that is on the screen and
@@ -819,7 +700,7 @@ function AposBot() {
                         //aqui100
                         
                         for (var j = clusterAllFood.length - 1; j >= 0 ; j--) {
-                            if (this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, clusterAllFood[j][0], clusterAllFood[j][1]) < ( secureDistance  ) + shiftDistance +100)
+                            if (this.computeDistance(allPossibleThreats[i].x, allPossibleThreats[i].y, clusterAllFood[j][0], clusterAllFood[j][1]) < ( secureDistance  ) + shiftDistance +(player[0].size * 4))
                                 clusterAllFood.splice(j, 1);
                         }
 
@@ -1032,7 +913,7 @@ function AposBot() {
                         //You're likely screwed. (This should never happen.)
 
                         //console.log("Failed");
-                        destinationChoices = [tempMoveX, tempMoveY];
+                        destinationChoices = [player[0].x, player[0].y];
                         
                     } else if (clusterAllFood.length > 0) {
                         for (var i = 0; i < clusterAllFood.length; i++) {
